@@ -96,10 +96,20 @@ public class PictureViewer extends JFrame implements ActionListener, Runnable {
             body.revalidate();
         }
 
+        // eftersom vi bara har 2 Action Listeners,
+        // denna är bättre än den nedan, magic strings farligt
+        if(e.getSource() == button) {
+            loadAllImages();
+        } else {
+            clear();
+        }
+/*
         switch (e.getActionCommand()) {
             case "Add Images" -> loadAllImages();
             case "Delete All Images" -> clear();
         }
+
+ */
     }
 
     public void loadAllImages() {
