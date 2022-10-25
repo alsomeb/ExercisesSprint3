@@ -28,7 +28,7 @@ public class TextEditorApp extends JFrame implements ActionListener {
     private final JScrollPane scrollPane = new JScrollPane(textArea);
 
     // TODO LÄGG TILL SKAPA NY TEXTFIL (OptionPane = Namn) OCH SPARA TILL DEN FILEN i Cache.txt
-    // Kalla på getComboBoxArray() igen i den metod för att uppd listan live i programmet!
+    // TODO Kalla på getComboBoxArray() igen i den metod för att uppd listan live i programmet!
 
 
     public TextEditorApp() {
@@ -67,6 +67,7 @@ public class TextEditorApp extends JFrame implements ActionListener {
 
         // Frame
         pack();
+        setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -108,7 +109,7 @@ public class TextEditorApp extends JFrame implements ActionListener {
 
        try(BufferedReader reader = Files.newBufferedReader(path)) {
            while ((line = reader.readLine()) != null) {
-               sb.append(line);
+               sb.append(line).append("\n");
            }
        } catch (IOException e) {
            JOptionPane.showMessageDialog(null, "Read from Cache File failed");

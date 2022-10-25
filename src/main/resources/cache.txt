@@ -1,1 +1,4 @@
 filen.txt
+test.txt
+testare.txt
+alexanderbruntest123.txt
