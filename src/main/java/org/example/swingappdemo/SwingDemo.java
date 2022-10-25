@@ -11,14 +11,19 @@ import java.awt.event.ActionListener;
 // Behöver ej ärva kan Direkt bara skapa upp ett objekt av typen JFrame också!
 // JFrame är själva "Bottenplattan" ramen till GUI
 
-public class SwingDemo extends JFrame {
+public class SwingDemo extends JFrame implements ActionListener{
 
     JPanel panel = new JPanel();
     JLabel label = new JLabel("Klicka knappen");
     JButton button = new JButton("Ändra Färg");
+    JButton button2 = new JButton("Test");
+    JButton button3 = new JButton("Test2");
 
 
     public SwingDemo() {
+        // panel layout
+        //panel.setLayout(new GridLayout(2, 2));
+        panel.setLayout(new BorderLayout());
 
         // Några av Knappens inbyggda metoder
         button.setFocusable(false); // Tar bort den fula ramen på texten
@@ -26,15 +31,18 @@ public class SwingDemo extends JFrame {
         button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2)); // Border
         button.setFont(new Font("Sans-serif", Font.BOLD, 20));
         button.setPreferredSize(new Dimension(120, 40));
+        button2.addActionListener(this); // lyssnare
 
         // Några av Labels inbyggda metoder
         label.setFont(new Font("Sans-serif", Font.BOLD, 20));
         label.setForeground(Color.decode("#4649FF"));
 
-        // Lägger in komponenter, som lego
+        // lägger in panel i frame sedan komponenter i Frame
         this.add(panel);
-        panel.add(label);
-        panel.add(button);
+        panel.add(label, BorderLayout.NORTH);
+        panel.add(button, BorderLayout.EAST);
+        panel.add(button2, BorderLayout.WEST);
+        panel.add(button3, BorderLayout.SOUTH);
 
         //setSize(400, 400);
         pack(); // sätter size dynamiskt beroende på komponenter
@@ -46,8 +54,9 @@ public class SwingDemo extends JFrame {
         buttonListener();
     }
 
+    // Kanske snyggare såhär än att impl interfacet ?
     private void buttonListener() {
-        button.addActionListener(actionEvent -> {
+        button.addActionListener(actionEvent -> { // LAMBDA METOD
             button.setPreferredSize(new Dimension(200, 40));
             button.setBorder(BorderFactory.createLineBorder(Color.decode("#7978FF"), 2));
             button.setBackground(Color.decode("#B2B2B2"));
@@ -55,5 +64,14 @@ public class SwingDemo extends JFrame {
             button.setText("Hejsan din jävel!");
             pack();
         });
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(button2.getText().equalsIgnoreCase("Test")) {
+            label.setText("Hej");
+        } else {
+            label.setText("Hopp");
+        }
     }
 }
