@@ -6,7 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -23,12 +26,9 @@ public class TextEditorApp extends JFrame implements ActionListener {
     private final JButton save = new JButton("Spara");
     private final JButton print = new JButton("Skriv ut");
     private final JButton exit = new JButton("Avsluta");
-
+    private final JButton newFile = new JButton("Skapa ny");
     private final JTextArea textArea = new JTextArea(30, 60);
     private final JScrollPane scrollPane = new JScrollPane(textArea);
-
-    // TODO LÄGG TILL SKAPA NY TEXTFIL (OptionPane = Namn) OCH SPARA TILL DEN FILEN i Cache.txt
-    // TODO Kalla på getComboBoxArray() igen i den metod för att uppd listan live i programmet!
 
 
     public TextEditorApp() {
@@ -42,13 +42,14 @@ public class TextEditorApp extends JFrame implements ActionListener {
         this.add(container);
 
         // Header
-        header.setLayout(new GridLayout(1, 6));
+        header.setLayout(new GridLayout(1, 7));
         header.add(filePathLabel);
         //header.add(filePath);
         header.add(filesDropDown);
         header.add(open);
         header.add(save);
         header.add(print);
+        header.add(newFile);
         header.add(exit);
         container.add(header, BorderLayout.NORTH);
 
@@ -64,6 +65,7 @@ public class TextEditorApp extends JFrame implements ActionListener {
         print.addActionListener(this);
         filesDropDown.addActionListener(this);
         save.addActionListener(this);
+        newFile.addActionListener(this);
 
         // Frame
         pack();
@@ -78,28 +80,18 @@ public class TextEditorApp extends JFrame implements ActionListener {
         if(e.getSource() == exit) {
             System.exit(0);
         } else if (e.getSource() == print) {
-            try {
-                textArea.print();
-            } catch (PrinterException ex) {
-                JOptionPane.showMessageDialog(null, "Kan ej Skriva ut");
-                ex.printStackTrace();
-            }
+            handlePrintFile();
         } else if (e.getSource() == open) {
-            Path url = getSelectedItemFilePath();
-            try {
-                textArea.read(Files.newBufferedReader(url), null);
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Kunde Ej läsa in från fil");
-            }
+            handleOpenFile();
         } else if (e.getSource() == save) {
-            Path url = getSelectedItemFilePath();
-            try {
-                textArea.write(Files.newBufferedWriter(url));
-                JOptionPane.showMessageDialog(null, "Sparat till fil!");
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Kunde ej skriva till fil");
-            }
+            handleSaveFile();
+        } else if (e.getSource() == newFile) {
+            handleNewFile();
         }
+    }
+
+    private void createFileByUrl(Path url) throws IOException {
+        Files.createFile(url);
     }
 
     public String loadCacheFile(){
@@ -124,6 +116,87 @@ public class TextEditorApp extends JFrame implements ActionListener {
     // Används för att hämta Path dynamiskt i ActionPerformed
     public Path getSelectedItemFilePath() {
         String selectedFile = (String) filesDropDown.getSelectedItem();
-        return Path.of("src/main/resources/" + selectedFile);
+        if(selectedFile != null) {
+            return Path.of("src/main/resources/" + selectedFile);
+        }
+        throw new NullPointerException();
+    }
+
+    public String getFileNamePrompt() {
+        String rootUrl = "src/main/resources/";
+        String fileName = JOptionPane.showInputDialog("Vad skall filen heta? (.txt läggs till automatiskt)");
+        if (fileName == null) {
+            return "";
+        }
+        return rootUrl.concat(fileName.trim().concat(".txt"));
+    }
+
+    public void writeNewFileToCache(String fileName) {
+        Path path = Path.of("src/main/resources/cache.txt");
+        int lastSlash = fileName.lastIndexOf("\\") + 1;
+
+        try(BufferedWriter bfWriter = new BufferedWriter(new FileWriter(path.toFile(),true))) {
+            bfWriter.write(fileName.substring(lastSlash));
+            bfWriter.write("\n");
+            System.out.println(fileName.substring(lastSlash));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // formaterar en Path string till bara filnamnet.txt
+    public String shrinkPathToFileNameString(Path url) {
+        int lastSlash = url.toString().lastIndexOf("\\") + 1;
+        return url.toString().substring(lastSlash);
+    }
+
+    public void handleNewFile() {
+        Path url = Path.of(getFileNamePrompt());
+        if(!url.toString().isBlank()) { // klickar man avbryt så får man en tom sträng därför vi har denna lösning
+            try {
+                createFileByUrl(url); // kommer söka i resources om den kan skapa filnamnet, annars generera fel, KOMMER INTE HELLER SKRIVA till Cache om felet kastas
+                writeNewFileToCache(url.toString());
+                filesDropDown.addItem(shrinkPathToFileNameString(url));
+                revalidate();
+                repaint();
+            } catch (FileAlreadyExistsException existsException) {
+                JOptionPane.showMessageDialog(null, "Filnamnet finns redan, välj annat namn");
+            } catch (IOException ioException) {
+                JOptionPane.showMessageDialog(null, "Något gick fel med sparandet");
+            }
+        }
+    }
+
+    public void handleSaveFile() {
+        try {
+            Path url = getSelectedItemFilePath();
+            textArea.write(Files.newBufferedWriter(url));
+            JOptionPane.showMessageDialog(null, "Sparat till fil!");
+        } catch (NullPointerException ne) {
+            JOptionPane.showMessageDialog(null, "Du måste välja en fil att spara i");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Kunde ej skriva till fil");
+        }
+    }
+
+    public void handleOpenFile() {
+        try {
+            Path url = getSelectedItemFilePath();
+            textArea.read(Files.newBufferedReader(url), null);
+        } catch (NullPointerException npe) {
+            JOptionPane.showMessageDialog(null, "Välj en fil att läsa");
+        } catch (IOException ioException) {
+            JOptionPane.showMessageDialog(null, "Kunde Ej läsa in från fil");
+        }
+    }
+
+    public void handlePrintFile() {
+        try {
+            textArea.print();
+        } catch (PrinterException ex) {
+            JOptionPane.showMessageDialog(null, "Kan ej Skriva ut");
+            ex.printStackTrace();
+        }
     }
 }
+
