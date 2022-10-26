@@ -136,7 +136,7 @@ public class TextEditorApp extends JFrame implements ActionListener {
         int lastSlash = fileName.lastIndexOf("\\") + 1;
 
         try(BufferedWriter bfWriter = new BufferedWriter(new FileWriter(path.toFile(),true))) {
-            bfWriter.write(fileName.substring(lastSlash));
+            bfWriter.write(shrinkPathToFileNameString(fileName));
             bfWriter.write("\n");
             System.out.println(fileName.substring(lastSlash));
         } catch (IOException e) {
@@ -145,9 +145,9 @@ public class TextEditorApp extends JFrame implements ActionListener {
     }
 
     // formaterar en Path string till bara filnamnet.txt
-    public String shrinkPathToFileNameString(Path url) {
-        int lastSlash = url.toString().lastIndexOf("\\") + 1;
-        return url.toString().substring(lastSlash);
+    public String shrinkPathToFileNameString(String url) {
+        int lastSlash = url.lastIndexOf("\\") + 1;
+        return url.substring(lastSlash);
     }
 
     public void handleNewFile() {
@@ -156,7 +156,7 @@ public class TextEditorApp extends JFrame implements ActionListener {
             try {
                 createFileByUrl(url); // kommer söka i resources om den kan skapa filnamnet, annars generera fel, KOMMER INTE HELLER SKRIVA till Cache om felet kastas
                 writeNewFileToCache(url.toString());
-                filesDropDown.addItem(shrinkPathToFileNameString(url));
+                filesDropDown.addItem(shrinkPathToFileNameString(url.toString()));
                 revalidate();
                 repaint();
             } catch (FileAlreadyExistsException existsException) {
