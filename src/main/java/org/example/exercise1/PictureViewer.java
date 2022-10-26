@@ -5,6 +5,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -75,12 +77,37 @@ public class PictureViewer extends JFrame implements ActionListener, Runnable {
         this.add(body, BorderLayout.CENTER); // 5 Konstanter, Nord Syd, Öst, Väst
         this.add(footer, BorderLayout.SOUTH);
 
+        // Mouse Listener
+        mouseListener();
+
         //pack(); // sätter size dynamiskt beroende på komponenter
         setSize(800,800);
         setVisible(true); // osynlig by default
         setResizable(false);
         setLocationRelativeTo(null); // rutan poppas upp i mitten av skärmen
         setDefaultCloseOperation(EXIT_ON_CLOSE); // Annars kommer programmet köras i bakgrunden även om vi exit
+    }
+
+    private void mouseListener() {
+
+        // DETTA BLIR SOM EN HOOVER EFFECT
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setForeground(Color.BLUE);
+                button.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+                button.setBackground(Color.lightGray);
+            }
+        });
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(Color.decode("#7978FF")); // Octal och Hex färger
+                button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2)); // Border
+                button.setForeground(Color.BLACK);
+            }
+        });
     }
 
     public BufferedImage generateLoremPicSum() throws IOException {
@@ -138,9 +165,21 @@ public class PictureViewer extends JFrame implements ActionListener, Runnable {
 
     public void loadImageFromUrl() {
         try {
-            JLabel bild = new JLabel(new ImageIcon(generateLoremPicSum()));
-            bild.setPreferredSize(new Dimension(300, 300));
-            body.add(bild);
+            // generateLoremPicSum() -> bufferedImg som är 300x300
+            // Vi skapar en ny Image med 298, 298 (eftersom border är 2px)
+            // Lägger denna Image i en ImageIcon
+            Image scaled = generateLoremPicSum().getScaledInstance(298, 298, Image.SCALE_SMOOTH);
+            JLabel bild = new JLabel(new ImageIcon(scaled));
+
+            // Lägger den i en panel med 300px per bild inkl border
+            JPanel bildPanel = new JPanel();
+            bildPanel.setPreferredSize(new Dimension(300,300));
+            bildPanel.setLayout(new BorderLayout());
+            bildPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+
+            // Lägger in komponenterna
+            bildPanel.add(bild);
+            body.add(bildPanel);
             revalidate();
             repaint();
         } catch (IOException ex) {
