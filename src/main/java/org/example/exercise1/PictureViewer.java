@@ -90,7 +90,8 @@ public class PictureViewer extends JFrame implements ActionListener, Runnable {
 
     private void mouseListener() {
 
-        // DETTA BLIR SOM EN HOOVER EFFECT
+        // ANONYM KLASS
+        // Behöver ej override alla metoder i MouseListener, vi har bara dem vi behöver, pga vi har en Adapter
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
