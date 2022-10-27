@@ -1,3 +1,5 @@
 filen.txt
 alex.txt
 oscar.txt
+testaren.txt
+lemonia.txt
