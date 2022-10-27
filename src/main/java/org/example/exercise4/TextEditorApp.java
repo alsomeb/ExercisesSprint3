@@ -21,7 +21,7 @@ public class TextEditorApp extends JFrame implements ActionListener {
     private final JLabel filePathLabel = new JLabel("Filnamn:");
     // private final JTextField filePath = new JTextField(10);
 
-    private final JComboBox<String> filesDropDown; // elementen i denna ComboBox är <String> generics
+    private final JComboBox<String> filesDropDown; // elementen i denna ComboBox är av typen <String> generics
     private final JButton open = new JButton("Öppna");
     private final JButton save = new JButton("Spara");
     private final JButton print = new JButton("Skriv ut");
