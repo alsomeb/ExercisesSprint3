@@ -1,0 +1,77 @@
+[33mcommit 569536d3882122a30e196a6e1385a9099a563663[m[33m ([m[1;36mHEAD -> [m[1;32mtesting[m[33m, [m[1;31morigin/testing[m[33m)[m
+Author: alsomeb <alsomeb@gmail.com>
+Date:   Thu Oct 27 10:30:51 2022 +0200
+
+    Testar ny branch
+
+[33mcommit 5c20e219015db6622c7f50d83945de727b54f8aa[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Author: alsomeb <alsomeb@gmail.com>
+Date:   Thu Oct 27 10:12:46 2022 +0200
+
+    added exercise 6, 7
+
+[33mcommit ecc81a2f6eab9f2edd9b169e2da1c1c0c8d43136[m
+Author: alsomeb <alsomeb@gmail.com>
+Date:   Wed Oct 26 16:05:35 2022 +0200
+
+    refactored code exercise 4
+
+[33mcommit 3a28d4c30d7a7248106de26a9f894ba4da21452d[m
+Author: alsomeb <alsomeb@gmail.com>
+Date:   Wed Oct 26 16:02:44 2022 +0200
+
+    refactored code exercise 4
+
+[33mcommit e8153526b9c4fb179942950531e5eb08e35fbc3e[m
+Author: alsomeb <alsomeb@gmail.com>
+Date:   Wed Oct 26 15:50:14 2022 +0200
+
+    ADded some sick code on exercise 1
+
+[33mcommit 5dccae32bdb148a7a1b413c4f20152874d3b969e[m
+Author: alsomeb <alsomeb@gmail.com>
+Date:   Wed Oct 26 13:00:24 2022 +0200
+
+    added CRUD for exercise 4
+
+[33mcommit 64badaef34dfc9f2f442ca5ddfde04c1e6e5ef87[m
+Author: alsomeb <alsomeb@gmail.com>
+Date:   Tue Oct 25 21:49:55 2022 +0200
+
+    added todo
+
+[33mcommit c16ec2a5b895fbbfd3f5bbdaf2ed6373d02c96f1[m
+Author: alsomeb <alsomeb@gmail.com>
+Date:   Tue Oct 25 21:20:24 2022 +0200
+
+    added exercise 4
+
+[33mcommit 4c45143b6c9232ade7588ccd2fd2bd2f2faf1261[m
+Author: alsomeb <alsomeb@gmail.com>
+Date:   Tue Oct 25 11:45:29 2022 +0200
+
+    added exercise 2
+
+[33mcommit 07147d2f02460ac8e3b3616ab6032e76fbef4573[m
+Author: alsomeb <alsomeb@gmail.com>
+Date:   Sun Oct 23 15:24:13 2022 +0200
+
+    refactored PictureViewer code
+
+[33mcommit f562f8633429dfd8f51443527c31f035ecdf8e52[m
+Author: alsomeb <alsomeb@gmail.com>
+Date:   Sun Oct 23 15:14:13 2022 +0200
+
+    added exercise 1, PictureViewer
+
+[33mcommit 74e9565f3b2e12229b9c386bea61d0c144511ed1[m
+Author: alsomeb <alsomeb@gmail.com>
+Date:   Sat Oct 22 00:34:44 2022 +0200
+
+    added file
+
+[33mcommit 1ad6f747ec75532fb1c4c7e6ae05840b9bbac637[m
+Author: alsomeb <alsomeb@gmail.com>
+Date:   Sat Oct 22 00:34:22 2022 +0200
+
+    Initial commit
